@@ -41,7 +41,7 @@ var side_bar_html = "";
 var div = document.getElementById("domtarget");
 
 var addr = div.textContent;
-//console.log(addr);
+
 
 $(function() {
 
