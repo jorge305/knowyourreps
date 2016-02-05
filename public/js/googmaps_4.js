@@ -32,10 +32,6 @@ var shadow;
 
 var infoWindows = [];
 
-//var WindowOptions;
-
-//var InfoWindow; 
-
 var side_bar_html = "";
 
 var div = document.getElementById("domtarget");
@@ -50,43 +46,24 @@ $.getJSON("geoaddr.php?address=" + addr)
     console.log("first data: " + data);
 
 myLatLng = data; 
-//console.log("here"+myLatLng);  
+  
 
 initMap(myLatLng);
-/*
-marker = new gm.Marker({
-    position: myLatLng,
-    map: map,
-    animation: gm.Animation.DROP,
-    title: 'Hello World!'
-  });
 
-marker.addListener('click', toggleBounce);
-*/
+getReps(setBounds);
 
 
-
-
-getReps(setBounds, function(){
-    console.log(side_bar_html);   
-    document.getElementById("side_bar").innerHTML = side_bar_html;
-});
-
-///add sidebar info to DOM 
 
 }) 
-//setBounds();
 
-///here is where getjson with repsjson goes
-//getReps(setBounds);
-console.log(side_bar_html);   
-document.getElementById("side_bar").innerHTML = side_bar_html;
+
+
 
 });
    
 
 
-//console.log("here"+myLatLng);
+
 function initMap(myLatLng) {
   map = new gm.Map(document.getElementById('map'), {
     center: myLatLng,
@@ -143,7 +120,7 @@ function addMarker(repsinfo)
 	
 
 
-console.log("berfore ajax")
+//console.log("berfore ajax")
 $.ajax({
   url: first,
   async: true,
@@ -151,31 +128,12 @@ $.ajax({
   
 
 
-/*
-
-	$.getJSON(first)
-   .done(function(data, textStatus, jqXHR) {
-  
-*/
-    //console.log(data);
-
     myLatLng = data;
-    //console.log(myLatLng);
 
-    //console.log("post getRepAddr" + myLatLng);
-/*
-	marker = new gm.Marker({
-    position: myLatLng,
-    map: map,
-    animation: gm.Animation.DROP,
-    title: 'Hello World!'
-  });
-*/
-//marker.addListener('click', toggleBounce);
 
 	repsaddr = '<h1 id="firstHeading" class="firstHeading">' + repsinfo.name + '</h1><ul>';
-	console.log("before if " + repsinfo.address);
-	//console.log("type of address " + typeof(repsinfo.address[0]));
+	//console.log("before if " + repsinfo.address);
+	
 	if (repsinfo.address !== null) 
 	{
 		console.log("line1 " + repsinfo.address[0].line1)
@@ -193,12 +151,9 @@ $.ajax({
 		repsaddr += repsinfo.address[0].city + ", " + repsinfo.address[0].state + " " + repsinfo.address[0].zip + "</li></div>" + cntm;  	
 
 	}
-	console.log("RESPADDR " + repsaddr);		
-  /*   var infowindow = new gm.InfoWindow({
-    content: repsaddr,
-    maxWidth: 200
-});
-*/
+	//console.log("RESPADDR " + repsaddr);		
+
+
      marker = new gm.Marker({
     position: myLatLng,
     map: map,
@@ -210,77 +165,39 @@ $.ajax({
      
 
 
-     console.log("marker & latlng " + marker.position + " " + myLatLng);
-/*
-     marker.addListener('click', function() {
-    infowindow.open(map, marker);
-    console.log("within infowindow " + marker);
-});
-*/
+     //console.log("marker & latlng " + marker.position + " " + myLatLng);
 
-/*
-	gm.event.addListener(marker, 'click', function() {
-  infowindow.open(map,marker);
-  console.log("within infowindow " + marker.position);
-  });
-*/
 
-content = repsaddr;
-/*
-oms.addListener(marker,'click', (function(marker,content,iw){ 
-    return function() {
-        iw.setContent(content);
-        iw.open(map,marker);
-    };
-})(marker,content,iw));  
-*/
-///////////
-/*
-      oms.addListener('click', function(marker) {
-        iw.setContent(content);
-        iw.open(map, marker);
-      });
-*/
+    content = repsaddr;
+
     oms.addMarker(marker);
 
 
 
     markers[cntm] = marker;
 
-var    WindowOptions = { content: content, position: marker.position};    
-var InfoWindow = new google.maps.InfoWindow(WindowOptions);
-infoWindows.push(InfoWindow);
-google.maps.event.addListener(marker, 'click', function() {
-    closeInfoWindows();
-    InfoWindow.open(map, marker[cntm]); // or this instead of marker
-});
+    var WindowOptions = { content: content, position: marker.position};    
+    var InfoWindow = new google.maps.InfoWindow(WindowOptions);
+    infoWindows.push(InfoWindow);
+    google.maps.event.addListener(marker, 'click', function() {
+        closeInfoWindows();
+        InfoWindow.open(map, marker[cntm]); // or this instead of marker
+    });
 
 
 
 
-    console.log("markers " + cntm + "" + markers[cntm].position);
+    //console.log("markers " + cntm + "" + markers[cntm].position);
     cntm++;
 
-///////add info to sidebar
-side_bar_html += '<a href="javascript:myclick(' + (markers.length-1) + ')">' + repsinfo.name + '<\/a><br>';
+    ///////add info to sidebar
+    side_bar_html += '<a href="javascript:myclick(' + (markers.length-1) + ')">' + repsinfo.name + '<\/a><br>';
 
-///inject sidebar into DOM
-document.getElementById("side_bar").innerHTML = side_bar_html;
+    ///inject sidebar into DOM
+    document.getElementById("side_bar").innerHTML = side_bar_html;
   
   
-//    var len = data.length;
-/*
-    for (var i = 0; i < len; i++) {
 
-          repsaddr += "<div><li> <a href=\"" + data[i].link + "\" target=\"_blank\">" + data[i].title + "</li></div>";
-
-      }
-      repsaddr += "</ul>";
-      if(repsaddr.length === 0){
-        repsaddr = "Quiet Town USA";
-        }
-    })
-  */ 
   })
   //console.log("marker " + marker.position);
   
@@ -300,75 +217,8 @@ document.getElementById("side_bar").innerHTML = side_bar_html;
 
 
 
-/*
-function showInfo(marker, content)
-{
-    // start div
-    var div = "<div id='info'>";
-    if (typeof(content) === "undefined")
-    {
-        // http://www.ajaxload.info/
-        div += "<img alt='loading' src='img/ajax-loader.gif'/>";
-    }
-    else
-    {
-        div += content;
-    }
 
-    // end div
-    div += "</div>";
-
-    // set info window's content
-    info.setContent(div);
-
-    // open info window (if not already open)
-    info.open(map, marker);
-}
-*/
-/*
-function getRepAddr(repsinfo)
-{
-
-	first = "geoaddr.php?address="
-	repaddr = repsinfo.address[0].line1;
-	repaddr += repsinfo.address[0].line2;
-	repaddr += " " + repsinfo.address[0].city;
-	repaddr += " " + repsinfo.address[0].state;
-	repaddr += " " + repsinfo.address[0].zip;
-	first += encodeURIComponent(repaddr);
-	console.log("econde url " + first);
-
-
-	$.getJSON(first)
-   .done(function(data, textStatus, jqXHR) {
-    console.log(data);
-
-    myLatLng = data;
-    console.log(myLatLng);
-
-    return myLatLng;
-
-	})
-
-   
-}
-*/
-
-/*
-function initMap() {
-  map = new gm.Map(document.getElementById('map'), {
-    center: myLatLng,
-    zoom: 8
-  });
-}  
-async defer
-
-&callback=initMap
-
-
-*/
-
-function getReps(callback, cb2)
+function getReps(callback)
 {
 $.getJSON("repsjson.php")
    .done(function(data, textStatus, jqXHR) {
@@ -386,12 +236,12 @@ $.getJSON("repsjson.php")
 
 ////for loop loading reps
     forreps(reps, function() {
-    console.log(side_bar_html);   
+    //console.log(side_bar_html);   
     document.getElementById("side_bar").innerHTML = side_bar_html;
     });
    
 callback();
-cb2();
+
 }) 
 
 }
@@ -405,7 +255,7 @@ function forreps(reps, cb3) {
     	{
     		i--;
     	}
-    	console.log("for loop after" + markers[cntm - 1]);
+    	//console.log("for loop after" + markers[cntm - 1]);
         cb3();	
     }
     
